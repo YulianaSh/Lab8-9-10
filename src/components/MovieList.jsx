@@ -1,13 +1,29 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import MovieCard from './MovieCard';
 
 const MovieList = ({ movies }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="movie-list">
+      <input
+        type="text"
+        placeholder="Search movies..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input"
+      />
       <div className="movie-grid">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
+        {filteredMovies.length > 0 ? (
+          filteredMovies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
+        ) : (
+          <p className="no-results">No movies found.</p>
+        )}
       </div>
     </div>
   );
