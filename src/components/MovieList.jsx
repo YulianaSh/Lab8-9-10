@@ -11,13 +11,15 @@ const MovieList = ({ movies }) => {
 
   return (
     <div className="movie-list">
-      <input
-        type="text"
-        placeholder="Search movies..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="search-input"
-      />
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search movies..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+      </div>
       <div className="movie-grid">
         {filteredMovies.length > 0 ? (
           filteredMovies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
@@ -36,7 +38,7 @@ MovieList.propTypes = {
       title: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
       genre: PropTypes.string.isRequired,
-      poster: PropTypes.string.isRequired,
+      poster: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
       sessions: PropTypes.arrayOf(
         PropTypes.shape({
           time: PropTypes.string.isRequired,
