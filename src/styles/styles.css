@@ -117,6 +117,78 @@ body {
     font-size: 16px;
   }
   
+.page-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.booking-page {
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.booking-details {
+  text-align: center;
+  font-size: 16px;
+  color: #bbbbbb;
+  margin-bottom: 20px;
+}
+
+.cinema-hall {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.screen {
+  background: #444;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.seats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.seat-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.row-number {
+  width: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #c03cf9;
+}
+
+.seat {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.seat.available {
+  background: #89f752; 
+}
+
+
+.seat:hover:not(.booked) {
+  opacity: 0.8;
+}
+
+  
   @media (max-width: 1200px) {
     .movie-grid {
       grid-template-columns: repeat(4, 1fr);
