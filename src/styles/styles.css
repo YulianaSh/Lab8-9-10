@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+    background: linear-gradient(180deg, #000000 0%, #240936 100%);
     color: #2bb4f4;
     font-family: Arial, sans-serif;
   }
@@ -59,7 +59,7 @@ body {
   
   .movie-card:hover {
     transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 20px rgba(14, 180, 174, 0.3);
   }
   
   .movie-card-poster {
