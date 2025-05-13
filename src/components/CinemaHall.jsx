@@ -12,6 +12,7 @@ const CinemaHall = () => {
   );
 
   const [seats, setSeats] = useState(initialSeats);
+  const [selectedSeats, setSelectedSeats] = useState([]);
 
   const handleSeatClick = (row, seat) => {
     const newSeats = [...seats];
@@ -20,8 +21,10 @@ const CinemaHall = () => {
 
     if (currentSeat.status === 'available') {
       newSeats[row - 1][seatIndex].status = 'selected';
+      setSelectedSeats([...selectedSeats, { row, seat }]);
     } else if (currentSeat.status === 'selected') {
       newSeats[row - 1][seatIndex].status = 'available';
+      setSelectedSeats(selectedSeats.filter((s) => !(s.row === row && s.seat === seat)));
     }
 
     setSeats(newSeats);
@@ -45,6 +48,18 @@ const CinemaHall = () => {
             ))}
           </div>
         ))}
+      </div>
+      <div className="selected-seats">
+        <h3>Вибрані місця:</h3>
+        {selectedSeats.length > 0 ? (
+          <ul>
+            {selectedSeats.map((s, index) => (
+              <li key={index}>Ряд {s.row}, Місце {s.seat}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>Місця не вибрано.</p>
+        )}
       </div>
     </div>
   );
