@@ -2,8 +2,8 @@ body {
     margin: 0;
     padding: 0;
     background: linear-gradient(180deg, #000000 0%, #240936 100%);
-    color: #2bb4f4;
-    font-family: Arial, sans-serif;
+    color: #20c6e7;
+    font-family: Georgia, sans-serif
   }
   
   .movie-list {
@@ -145,28 +145,33 @@ body {
   background: #444;
   color: #fff;
   text-align: center;
-  padding: 10px;
+  padding: 5px;
   margin-bottom: 20px;
   border-radius: 5px;
+  max-width: 50%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .seats-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-items: center;
 }
 
 .seat-row {
   display: flex;
   align-items: center;
   gap: 5px;
+  justify-content: center;
 }
 
 .row-number {
   width: 30px;
   text-align: center;
   font-size: 14px;
-  color: #c03cf9;
+  color: #a419ef;
 }
 
 .seat {
@@ -180,12 +185,42 @@ body {
 }
 
 .seat.available {
-  background: #89f752; 
+  background: #d91dfa;
 }
 
+.seat.booked {
+  background: #666;
+  cursor: not-allowed;
+}
+
+.seat.selected {
+  background: #20c6e7; 
+}
 
 .seat:hover:not(.booked) {
   opacity: 0.8;
+}
+
+.selected-seats {
+  margin-top: 20px;
+  padding: 15px;
+  background: #2a2e3d;
+  border-radius: 5px;
+}
+
+.selected-seats h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.selected-seats ul {
+  list-style: none;
+  padding: 0;
+}
+
+.selected-seats li {
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 
   

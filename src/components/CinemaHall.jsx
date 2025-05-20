@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import BookingService from '../../services/BookingService';
 
 const CinemaHall = () => {
+  const { id } = useParams();
   const rows = 6;
   const seatsPerRow = [15, 15, 15, 15, 15, 9];
   const initialSeats = Array.from({ length: rows }, (_, rowIndex) =>
@@ -12,19 +15,31 @@ const CinemaHall = () => {
   );
 
   const [seats, setSeats] = useState(initialSeats);
-  const [selectedSeats, setSelectedSeats] = useState([]);
+
+  useEffect(() => {
+    const bookedSeats = BookingService.getBookedSeats(id);
+    const newSeats = [...initialSeats];
+    bookedSeats.forEach((seat) => {
+      const rowIndex = seat.row - 1;
+      const seatIndex = seat.seat - 1;
+      if (newSeats[rowIndex] && newSeats[rowIndex][seatIndex]) {
+        newSeats[rowIndex][seatIndex].status = 'booked';
+      }
+    });
+    setSeats(newSeats);
+  }, [id]);
 
   const handleSeatClick = (row, seat) => {
     const newSeats = [...seats];
     const seatIndex = newSeats[row - 1].findIndex((s) => s.seat === seat);
     const currentSeat = newSeats[row - 1][seatIndex];
 
+    if (currentSeat.status === 'booked') return;
+
     if (currentSeat.status === 'available') {
       newSeats[row - 1][seatIndex].status = 'selected';
-      setSelectedSeats([...selectedSeats, { row, seat }]);
     } else if (currentSeat.status === 'selected') {
       newSeats[row - 1][seatIndex].status = 'available';
-      setSelectedSeats(selectedSeats.filter((s) => !(s.row === row && s.seat === seat)));
     }
 
     setSeats(newSeats);
@@ -51,15 +66,12 @@ const CinemaHall = () => {
       </div>
       <div className="selected-seats">
         <h3>Вибрані місця:</h3>
-        {selectedSeats.length > 0 ? (
-          <ul>
-            {selectedSeats.map((s, index) => (
-              <li key={index}>Ряд {s.row}, Місце {s.seat}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>Місця не вибрано.</p>
-        )}
+        {seats
+          .flat()
+          .filter((seat) => seat.status === 'selected')
+          .map((seat, index) => (
+            <p key={index}>Ряд {seat.row}, Місце {seat.seat}</p>
+          ))}
       </div>
     </div>
   );
