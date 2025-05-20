@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import BookingService from '../../services/BookingService';
+import BookingService from '../services/BookingService';
 
 const CinemaHall = () => {
   const { id } = useParams();
-  const rows = 6;
-  const seatsPerRow = [15, 15, 15, 15, 15, 9];
+  const rows = 8;
+  const seatsPerRow = [17, 17, 17, 17, 17, 17, 17, 13];
   const initialSeats = Array.from({ length: rows }, (_, rowIndex) =>
     Array.from({ length: seatsPerRow[rowIndex] }, (_, seatIndex) => ({
       row: rowIndex + 1,
@@ -15,6 +15,7 @@ const CinemaHall = () => {
   );
 
   const [seats, setSeats] = useState(initialSeats);
+  const [selectedSeats, setSelectedSeats] = useState([]);
 
   useEffect(() => {
     const bookedSeats = BookingService.getBookedSeats(id);
@@ -38,8 +39,10 @@ const CinemaHall = () => {
 
     if (currentSeat.status === 'available') {
       newSeats[row - 1][seatIndex].status = 'selected';
+      setSelectedSeats([...selectedSeats, { row, seat }]);
     } else if (currentSeat.status === 'selected') {
       newSeats[row - 1][seatIndex].status = 'available';
+      setSelectedSeats(selectedSeats.filter((s) => !(s.row === row && s.seat === seat)));
     }
 
     setSeats(newSeats);
@@ -66,12 +69,18 @@ const CinemaHall = () => {
       </div>
       <div className="selected-seats">
         <h3>Вибрані місця:</h3>
-        {seats
-          .flat()
-          .filter((seat) => seat.status === 'selected')
-          .map((seat, index) => (
-            <p key={index}>Ряд {seat.row}, Місце {seat.seat}</p>
-          ))}
+        {selectedSeats.length > 0 ? (
+          <ul>
+            {selectedSeats.map((s, index) => (
+              <li key={index}>Ряд {s.row}, Місце {s.seat}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>Місця не вибрано.</p>
+        )}
+        {selectedSeats.length > 0 && (
+          <button className="book-button">Забронювати</button>
+        )}
       </div>
     </div>
   );
