@@ -236,6 +236,54 @@ body {
 .book-button:hover {
   background: #7f05b4;
 }
+
+.booking-form {
+  margin-top: 20px;
+  padding: 15px;
+  width: 40%;
+  text-align: center;
+  background: #251532;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.booking-form div {
+  margin-bottom: 10px;
+}
+
+.booking-form input:hover {
+  border: 1.5px solid #20c6e7
+}
+
+.booking-form input {
+  width: 90%;
+  padding: 8px;
+  background: #311b37;
+  color: #fff;
+  border: 1px solid #d91dfa;
+  border-radius: 5px;
+}
+
+.booking-form button {
+  background: #d91dfa;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.booking-form button:hover {
+  background: #7f05b4;
+} 
+
+.error {
+  color: #dc3545;
+  font-size: 12px;
+  display: block;
+  margin-top: 5px;
+}
   
   @media (max-width: 1200px) {
     .movie-grid {

@@ -16,6 +16,9 @@ const CinemaHall = () => {
 
   const [seats, setSeats] = useState(initialSeats);
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({ name: '', phone: '', email: '' });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const bookedSeats = BookingService.getBookedSeats(id);
@@ -46,6 +49,49 @@ const CinemaHall = () => {
     }
 
     setSeats(newSeats);
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    if (!formData.phone.trim()) newErrors.phone = 'Phone is required';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleBooking = () => {
+    if (selectedSeats.length === 0) {
+      alert('Please select at least one seat.');
+      return;
+    }
+    setShowForm(true);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      BookingService.saveBooking(id, selectedSeats, formData);
+      setShowForm(false);
+      setSelectedSeats([]);
+      const newSeats = [...seats];
+      selectedSeats.forEach((seat) => {
+        const rowIndex = seat.row - 1;
+        const seatIndex = newSeats[rowIndex].findIndex((s) => s.seat === seat.seat);
+        newSeats[rowIndex][seatIndex].status = 'booked';
+      });
+      setSeats(newSeats);
+      alert('Booking successful!');
+    }
   };
 
   return (
@@ -79,9 +125,49 @@ const CinemaHall = () => {
           <p>Місця не вибрано.</p>
         )}
         {selectedSeats.length > 0 && (
-          <button className="book-button">Забронювати</button>
+          <button className="book-button" onClick={handleBooking}>
+            Забронювати
+          </button>
         )}
       </div>
+      {showForm && (
+        <div className="booking-form">
+          <h3>Введіть дані для бронювання</h3>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <input
+                type="text"
+                name="name"
+                placeholder="Ім'я"
+                value={formData.name}
+                onChange={handleInputChange}
+              />
+              {errors.name && <span className="error">{errors.name}</span>}
+            </div>
+            <div>
+              <input
+                type="text"
+                name="phone"
+                placeholder="Телефон"
+                value={formData.phone}
+                onChange={handleInputChange}
+              />
+              {errors.phone && <span className="error">{errors.phone}</span>}
+            </div>
+            <div>
+              <input
+                type="email"
+                name="email"
+                placeholder="Емейл"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
+              {errors.email && <span className="error">{errors.email}</span>}
+            </div>
+            <button type="submit">Підтвердити</button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };
