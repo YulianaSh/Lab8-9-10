@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BookingService from '../services/BookingService';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CinemaHall = () => {
   const { id } = useParams();
@@ -71,7 +73,7 @@ const CinemaHall = () => {
 
   const handleBooking = () => {
     if (selectedSeats.length === 0) {
-      alert('Please select at least one seat.');
+      toast.error('Please select at least one seat.');
       return;
     }
     setShowForm(true);
@@ -90,7 +92,7 @@ const CinemaHall = () => {
         newSeats[rowIndex][seatIndex].status = 'booked';
       });
       setSeats(newSeats);
-      alert('Booking successful!');
+      toast.success('Booking successful!');
     }
   };
 
@@ -168,6 +170,7 @@ const CinemaHall = () => {
           </form>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 };
